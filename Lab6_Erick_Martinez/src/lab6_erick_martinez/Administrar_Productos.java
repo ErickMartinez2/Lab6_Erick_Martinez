@@ -55,7 +55,7 @@ public class Administrar_Productos {
                 bw.write(p.getNombre() + ";");
                 bw.write(p.getCategoria() + ";");
                 bw.write(p.getPrecio() + ";");
-                bw.write(p.getNombre() + ";");
+                bw.write(p.getDescuento() + ";");
             }
             bw.flush();
         } catch (Exception e) {
@@ -66,7 +66,6 @@ public class Administrar_Productos {
     
     public void CargarArchivo(){
         Scanner sc = null;
-        listaProductos = new ArrayList();
         try {
             sc = new Scanner(archivo);
             sc.useDelimiter(";");
@@ -76,4 +75,6 @@ public class Administrar_Productos {
         } catch (Exception e) {
         }
     }
+    
+    
 }
