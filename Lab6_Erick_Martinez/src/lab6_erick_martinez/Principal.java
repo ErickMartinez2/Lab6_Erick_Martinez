@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 public class Principal extends javax.swing.JFrame {
 
     Administrar_Productos ap = new Administrar_Productos("./Productos.txt");
+    double ganancia = 0;
 
     /**
      * Creates new form Principal
@@ -279,6 +280,11 @@ public class Principal extends javax.swing.JFrame {
 
         jButton12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton12.setText("Ganancia");
+        jButton12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton12MouseClicked(evt);
+            }
+        });
 
         jButton13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton13.setText("Guardar");
@@ -579,11 +585,13 @@ public class Principal extends javax.swing.JFrame {
         DefaultListModel m2 = (DefaultListModel) jl_productos1.getModel();
         DefaultListModel m3 = (DefaultListModel) jl_compra.getModel();
         if (jl_clientes1.getSelectedIndex() >= 0 && jl_productos1.getSelectedIndex() >= 0) {
-            
+            String prod = ((Productos) m2.get(jl_productos1.getSelectedIndex())).getNombre();
             m3.addElement(jl_productos1.getSelectedValue());
+            for (int i = 0; i < m3.getSize(); i++) {
+                ganancia += ((Productos) m3.getElementAt(i)).getPrecio() - ((Productos) m3.getElementAt(i)).getPrecio() * ((Productos) m3.getElementAt(i)).getDescuento();
+            }
             m2.remove(jl_productos1.getSelectedIndex());
             jl_productos1.setModel(m2);
-            String prod = ((Productos)m2.get(jl_productos1.getSelectedIndex())).getNombre();
             for (int i = 0; i < ap.getListaProductos().size(); i++) {
                 if (prod.equals(ap.getListaProductos().get(i).getNombre())) {
                     ((Clientes) m.get(jl_clientes1.getSelectedIndex())).getProducto().add(ap.getListaProductos().get(i));
@@ -616,14 +624,22 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton13MouseClicked
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
-        DefaultListModel m = (DefaultListModel) jl_compra.getModel();
-        String factura = "";
-        for (int i = 0; i < ((Clientes) m.get(jl_clientes1.getSelectedIndex())).getProducto().size(); i++) {
-            factura += ((Clientes) m.get(jl_clientes1.getSelectedIndex())).getProducto().get(i).getNombre() + ", ";
+        try {
+            DefaultListModel m = (DefaultListModel) jl_compra.getModel();
+            String factura = "";
+            for (int i = 0; i < ((Clientes) m.get(jl_clientes1.getSelectedIndex())).getProducto().size(); i++) {
+                factura += ((Clientes) m.get(jl_clientes1.getSelectedIndex())).getProducto().get(i).getNombre() + ", ";
+            }
+            JOptionPane.showMessageDialog(this, "Factura de " + ((Clientes) m.get(jl_clientes1.getSelectedIndex())).getNombre() + "\n"
+                    + factura);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "No se porque no se imprime la factura :(");
         }
-        JOptionPane.showMessageDialog(this, "Factura de " + ((Clientes) m.get(jl_clientes1.getSelectedIndex())).getNombre() + "\n"
-        + factura);
     }//GEN-LAST:event_jButton5MouseClicked
+
+    private void jButton12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton12MouseClicked
+        JOptionPane.showMessageDialog(this, "La ganancia es de: " + ganancia);
+    }//GEN-LAST:event_jButton12MouseClicked
 
     /**
      * @param args the command line arguments
